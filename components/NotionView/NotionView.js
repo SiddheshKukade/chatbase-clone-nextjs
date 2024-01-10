@@ -47,7 +47,7 @@ const NotionView = () => {
     // Convert the data to a JSON string
     const jsonData = JSON.stringify(dataToSend);
 
-    const apiUrl = 'http://localhost:3000/api/getBlockData';
+    const apiUrl = process.env.NEXT_PUBLIC_REACT_APP_SERVER_URL + '/getBlockData';
 
     fetch(apiUrl, {
       method: 'POST',
@@ -88,7 +88,7 @@ const NotionView = () => {
     // Convert the data to a JSON string
     const jsonData = JSON.stringify(dataToSend);
 
-    const apiUrl = 'http://localhost:3000/api/fetchPagesData';
+    const apiUrl = process.env.NEXT_PUBLIC_REACT_APP_SERVER_URL + '/fetchPagesData';
 
     fetch(apiUrl, {
       method: 'POST',
@@ -129,7 +129,7 @@ const NotionView = () => {
   }
   const getPagesFromDatabase = () => {
     setContentLoading(true);
-    const apiUrl = 'http://localhost:3000/api/getDatabase';
+    const apiUrl = process.env.NEXT_PUBLIC_REACT_APP_SERVER_URL+ '/getDatabase';
 
     fetch(apiUrl)
       .then(response => {
