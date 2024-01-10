@@ -8,7 +8,7 @@ import SourcesPage from '../Sources/SourcesPage'
 const TabsView = () => {
     return (
         <Tabs defaultIndex={3} colorScheme={"#6c28d9"} w={"100%"}>
-            <TabList  w={"100vw"} display={"flex"} flexDirection={"row"} justifyContent={"center"}>
+            <TabList w={"100vw"} display={"flex"} flexDirection={"row"} justifyContent={"center"}>
                 <Tab>Chatbot</Tab>
                 <Tab>Settings</Tab>
                 <Tab>Dashboard</Tab>
@@ -28,16 +28,28 @@ const TabsView = () => {
 
             <TabPanels>
                 <TabPanel>
-                    <p>one!</p>
+                    <p>Go To Sources</p>
                 </TabPanel>
                 <TabPanel>
-                    <p>two!</p>
+                    <p>Go To Sources</p>
                 </TabPanel>
                 <TabPanel>
-                    <p>three!</p>
+                    <p>Go To Sources</p>
                 </TabPanel>
                 <TabPanel>
                     <SourcesPage />
+                </TabPanel>
+                <TabPanel>
+                    <p>Go To Sources</p>
+                </TabPanel>
+                <TabPanel>
+                    <p>Go To Sources</p>
+                </TabPanel>
+                <TabPanel>
+                    <p>Go To Sources</p>
+                </TabPanel>
+                <TabPanel>
+                    <p>Go To Sources</p>
                 </TabPanel>
             </TabPanels>
         </Tabs>
