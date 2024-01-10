@@ -7,9 +7,8 @@ import SourcesPage from '../Sources/SourcesPage'
 
 const TabsView = () => {
     return (
-        <Tabs colorScheme={"#6c28d9"} w={"100%"}>
-            {/* <Center> */}
-            <TabList w={"100vw"} display={"flex"} flexDirection={"row"} justifyContent={"center"}>
+        <Tabs defaultIndex={3} colorScheme={"#6c28d9"} w={"100%"}>
+            <TabList  w={"100vw"} display={"flex"} flexDirection={"row"} justifyContent={"center"}>
                 <Tab>Chatbot</Tab>
                 <Tab>Settings</Tab>
                 <Tab>Dashboard</Tab>
@@ -25,7 +24,6 @@ const TabsView = () => {
                 <Tab>Delete</Tab>
 
             </TabList>
-            {/* </Center> */}
 
 
             <TabPanels>
