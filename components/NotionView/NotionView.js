@@ -35,7 +35,7 @@ const NotionView = () => {
   //   });
   // const router = useRouter();
   const handleClickNotion = () => {
-    window.location.href = "https://api.notion.com/v1/oauth/authorize?client_id=c11d73dd-6e07-4354-8cb6-230a73826598&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F"
+    window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=c11d73dd-6e07-4354-8cb6-230a73826598&response_type=code&owner=user&redirect_uri=${process.env.NEXT_PUBLIC_REACT_APP_SERVER_URL_REDIRECT}`
   }
 
   const getBlockData = (blockId) => {
