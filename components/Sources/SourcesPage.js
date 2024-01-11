@@ -11,7 +11,7 @@ import QA from '../QA/QA';
 import Website from '../Website/Website';
 import TextView from '../Text/Text';
 const SourcesPage = () => {
-    const [selectedBtn, setSelectedBtn] = useState("Files")
+    const [selectedBtn, setSelectedBtn] = useState("Notion")
     const handleUpdateMenu = (val) => {
         console.log("first", val)
         setSelectedBtn(val);

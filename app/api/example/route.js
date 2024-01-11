@@ -14,7 +14,7 @@ export async function GET() {
     });
 
     const data = await response.json();
-    console.log("local data", data);
+    // console.log("local data", data);
 
     return Response.json({ val: 1, data });
   } catch (error) {

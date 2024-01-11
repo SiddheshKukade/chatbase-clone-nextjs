@@ -17,9 +17,9 @@ export default function RootLayout({ children }) {
   )
 }
 
-// secret_fmBmClVvok3UJPbIcpGgvrw9sJwlw0cHLC3WGWmAhtU
+// secret_OQrpMdx8y6DNht3rVbgGLav9eRgOpLXKEGtrE0PXJD9
 
 //OAUTH CLient  ID c11d73dd-6e07-4354-8cb6-230a73826598
-// OUTAH CLient secret secret_Qb7Ilhi5BOpCHSRUNa25RNrXCQzbPiPUxjDBQoOkmBd
+// OUTAH CLient secret secret_OQrpMdx8y6DNht3rVbgGLav9eRgOpLXKEGtrE0PXJD9
 
 //AUTH Url https://api.notion.com/v1/oauth/authorize?client_id=c11d73dd-6e07-4354-8cb6-230a73826598&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F
