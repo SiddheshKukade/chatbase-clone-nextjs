@@ -2,7 +2,7 @@
 export async function POST(req, res) {
   let queryData = await req.json();
   // console.log(queryData)
-  const redirectUri = 'http://localhost:3000/';
+  const redirectUri = process.env.NEXT_PUBLIC_REACT_APP_SERVER_URL_REDIRECT_URI;
   const authorizationCode = queryData?.authCode;
   const notionVersion = '2022-02-22';
   const username = 'c11d73dd-6e07-4354-8cb6-230a73826598';
