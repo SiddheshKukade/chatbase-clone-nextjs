@@ -32,8 +32,14 @@ export async function POST(req, res) {
           pgId: page?.id
         }
       })
+      const tableData =  data2?.results.map(aa=> {
+        return {
+          name: aa?.object,
+          url: aa?.url
+        }
+      })
       console.log("pgData is --> " ,pgData);
-      return Response.json({ data: res2 , pgData});
+      return Response.json({ data: res2 , pgData , tableData, resultData: data2});
     } catch (error) {
       console.error('Error:', error);
       return Response.json({ error: 'An error occurred' });

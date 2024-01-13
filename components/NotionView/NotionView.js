@@ -1,12 +1,35 @@
 'use client';
 
-import { Box, Button, Flex, Heading, Center, Text, Input, Textarea, Divider, Spinner, IconButton, useToast } from '@chakra-ui/react'
+import {
+  Box, Button, Flex, Heading, Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer, Center, Text, Input, Textarea, Divider, Spinner, IconButton, useToast, Tabs, TabList, TabPanels, TabPanel, Tab, Avatar
+} from '@chakra-ui/react'
 import { getBlock } from '@notionhq/client/build/src/api-endpoints';
 import { FaCheckCircle } from "react-icons/fa";
 
 // import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { RiNotionFill } from "react-icons/ri";
+
+const TruncatedText = ({ text, maxChars }) => {
+  const truncatedText = text.length > maxChars
+    ? text.substring(0, maxChars) + "..."
+    : text;
+
+  return (
+    <Text>
+      {truncatedText}
+    </Text>
+  );
+};
+
 const NotionView = () => {
   const toast = useToast()
   const [text, setText] = useState("");
@@ -14,9 +37,14 @@ const NotionView = () => {
   const [blockIds, setBlockIds] = useState([]);
   const [contentList, setContentList] = useState([]);
   const [accessToken, setAccessToken] = useState("")
+  const [searchData, setSearchData] = useState({});
   const [localPgData, setLocalPgData] = useState([]);
   const [contentLoading, setContentLoading] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userProfileUrl, setUserProfileUrl] = useState("");
   const [pageNameContentList, setPageNameContentList] = useState([]);
+  const [tableData, setTableData] = useState([]);
+
   const handleChageText = (e) => {
     setText(e.target?.value)
   }
@@ -196,6 +224,10 @@ const NotionView = () => {
         return response.json();
       })
         .then(data => {
+          setTableData(data?.tableData)
+          setSearchData(data?.resultData)
+
+          console.log("table data--> ", data?.tableData)
           console.log("received token -->", data?.pgData?.length);
           if (data?.pgData?.length > 0) {
             let localPgD = data?.pgData;
@@ -214,7 +246,7 @@ const NotionView = () => {
           // Handle errors during the fetch operation
           console.error('Error fetching data:', error);
         });
-        setContentLoading(false)
+      setContentLoading(false)
     }
     const getAuthToken = (authCode) => {
       setContentLoading(true);
@@ -241,9 +273,11 @@ const NotionView = () => {
       })
         .then(data => {
           if (data?.accessToken) {
+            setUserName(data?.data?.owner?.user?.name);
+            setUserProfileUrl(data?.data?.owner?.user?.avatar_url)
             setAccessToken(accessToken);
             getSearchData(data?.accessToken);
-          }else {
+          } else {
             toast({
               description: `Token Expired Please Login to Notion again to see the content`,
               title: 'Error.',
@@ -305,25 +339,89 @@ const NotionView = () => {
           </Flex>
         </Flex>
         <Flex border={0} display={"flex"} direction="row" justifyContent={"center"} alignItems={"center"} borderColor={"#e5e7eb"} borderWidth={1} p={2} px={4} w={"100%"} >
-              {pageNameContentList.length > 0 ? <><Text fontWeight={700} fontSize={"xl"}>Notion Connected</Text> &nbsp;  <FaCheckCircle color="green" /> </>
-                : <><Text fontWeight={700} fontSize={"xl"}>Notion Not Connected</Text> &nbsp;  <FaCheckCircle color="darkgray" /> </>
-              }
-            </Flex>
+          {pageNameContentList.length > 0 ? <><Text fontWeight={700} fontSize={"xl"}>Notion Connected</Text> &nbsp;  <FaCheckCircle color="green" /> </>
+            : <><Text fontWeight={700} fontSize={"xl"}>Notion Not Connected</Text> &nbsp;  <FaCheckCircle color="darkgray" /> </>
+          }
+        </Flex>
         {
-          contentLoading ? <Center> <Spinner /> </Center> : <Flex w={"100%"} borderColor={"#e5e7eb"} borderWidth={1} display={"flex"} gap={2} flexDirection={"column"} justifyContent={"center"} alignItems={"center"}>
-          
-            {
-              pageNameContentList.map(page => (
-                <Flex direction={"column"} justifyContent={"flex-start"} alignItems={"flex-start"} px={3}>
-                  <Text fontWeight={"bold"}>
-                    {page?.name}
-                  </Text>
-                  {page?.content.map(cnt => <Text>{cnt} </Text>)}
+          pageNameContentList?.length > 0 ?  <Flex alignItems={"center"} direction={"row"} gap={3} justifyContent={"flex-start"}>
+            <Avatar src={userProfileUrl} />
+            <Text fontWeight={700}> {userName}</Text>
+          </Flex>  : "" 
+       }
+        {
+          contentLoading ? <Center> <Spinner /> </Center> : <Tabs>
+            <TabList maxW={"100%"}>
+              <Tab>Table Format</Tab>
+              <Tab>JSON Format</Tab>
+              <Tab>Normal Format</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <TableContainer>
+                  <Table overflow={"hidden"} variant='simple'>
+                    <TableCaption>Data Fetched from Notion API</TableCaption>
+                    <Thead>
+                      <Tr>
+                        <Th>Document Type</Th>
+                        <Th>Document URL</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {tableData?.length > 0 ?
+                        tableData?.map(table => (
+                          <Tr>
+                            <Td>    <TruncatedText text={table?.name} maxChars={20} /></Td>
+                            <a href={table?.url} target='_blank'>   <Td color={"#6c28d9"}>
+                              <TruncatedText text={table?.url} maxChars={55} /></Td></a>
+                          </Tr>
+                        ))
+
+                        :
+                        <Tr>
+                          <Td>-</Td>
+                          <Td>-</Td>
+                        </Tr>}
+
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+              </TabPanel>
+
+              <TabPanel >
+                {/* <Center> */}
+                <Flex overflowX={"scroll"} textColor={"white"} fontWeight={600} bgColor={"#334155"}>
+                  <pre style={{
+                    overflowX: "scroll",
+                    oveflow: "hidden"
+                    , maxWidth: "30Vw"
+                  }} >
+
+                    {JSON.stringify(searchData, null, 2)}
+                  </pre>
                 </Flex>
-              ))
-            }
-          </Flex>
+
+              </TabPanel>
+              <TabPanel>
+                <Flex w={"100%"} borderColor={"#e5e7eb"} borderWidth={1} display={"flex"} gap={2} flexDirection={"column"} justifyContent={"center"} alignItems={"center"}>
+
+                  {
+                    pageNameContentList.map(page => (
+                      <Flex direction={"column"} justifyContent={"flex-start"} alignItems={"flex-start"} px={3}>
+                        <Text fontWeight={"bold"}>
+                          {page?.name}
+                        </Text>
+                        {page?.content.map(cnt => <Text>{cnt} </Text>)}
+                      </Flex>
+                    ))
+                  }
+                </Flex>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         }
+
 
       </Flex>
     </Flex>
